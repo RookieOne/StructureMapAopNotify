@@ -26,8 +26,9 @@ namespace StructureMapAopNotify.StructureMap
             }
 
             var interceptors = new List<IInterceptor>();
-            interceptors.Add(new NotifyInterceptor());
+            interceptors.Add(new NotifyInterceptor());                       
 
+            
             return generator.CreateClassProxy(typeof (MyViewModel), interceptors.ToArray(), args.ToArray());
         }
 
@@ -36,4 +37,5 @@ namespace StructureMapAopNotify.StructureMap
             return type.CanBeCastTo(typeof (BaseViewModel));
         }
     }
+
 }

@@ -3,7 +3,7 @@ using StructureMapAopNotify.Commands;
 
 namespace StructureMapAopNotify.ViewModels
 {
-    public class MyViewModel : BaseViewModel
+    public class MyViewModel : BaseViewModel, IMyViewModel
     {
         public MyViewModel(IService service)
         {

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using StructureMapAopNotify.ViewModels;
 
 namespace StructureMapAopNotify
@@ -10,16 +11,27 @@ namespace StructureMapAopNotify
     {
         public Window1()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
 
-            content.Content = App.Container.GetInstance<MyViewModel>();
+                var whatIHave = App.Container.WhatDoIHave();
 
-            var vm = content.Content as MyViewModel;
+                content.Content = App.Container.GetInstance<IMyViewModel>();
 
-            vm.PropertyChanged += (sender, e) =>
-                                      {
-                                          string s = e.PropertyName;
-                                      };
+                var vm = content.Content as MyViewModel;
+
+                vm.PropertyChanged += (sender, e) =>
+                {
+                    string s = e.PropertyName;
+                };
+            }
+            catch (Exception ex)
+            {
+                
+                throw ex;
+            }
+
         }
     }
 }
