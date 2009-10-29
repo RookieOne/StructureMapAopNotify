@@ -114,12 +114,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="StructureMap\MyBuildInterceptor.cs" />
-    <Compile Include="StructureMap\MyEnrichmentHandler.cs" />
-    <Compile Include="StructureMap\MyInstanceFactoryInterceptor.cs" />
-    <Compile Include="StructureMap\MyInterceptor.cs" />
     <Compile Include="StructureMap\MyNotifyConvention.cs" />
-    <Compile Include="StructureMap\MyRegistry.cs" />
-    <Compile Include="StructureMap\StructureMapProxyBuilder.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\IMyViewModel.cs" />
     <Compile Include="ViewModels\IService.cs" />

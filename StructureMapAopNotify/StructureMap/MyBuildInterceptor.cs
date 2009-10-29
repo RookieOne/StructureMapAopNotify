@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Castle.Core.Interceptor;
 using Castle.DynamicProxy;
 using StructureMap;
@@ -19,22 +20,21 @@ namespace StructureMapAopNotify.StructureMap
 
         public object Build(BuildSession buildSession, Type pluginType, Instance instance)
         {
-            var generator = new ProxyGenerator();
-
-            var constructor = _ConcreteType.GetConstructors()[0];
-            var parameters = constructor.GetParameters();
-
-            List<object> args = new List<object>();
-            foreach (var parameter in parameters)
-            {
-                args.Add(App.Container.GetInstance(parameter.ParameterType));
-            }
-
-            var interceptors = new List<IInterceptor>();
-            interceptors.Add(new NotifyInterceptor());
+            var constructorArgs = _ConcreteType
+                .GetConstructors()
+                .FirstOrDefault()
+                .GetParameters()
+                .Select(p => buildSession.CreateInstance(p.ParameterType))
+                .ToArray();
 
 
-            return generator.CreateClassProxy(_ConcreteType, interceptors.ToArray(), args.ToArray());
+            var interceptors = new List<IInterceptor>
+                                   {
+                                       new NotifyInterceptor()
+                                   }
+                                   .ToArray();
+
+            return new ProxyGenerator().CreateClassProxy(_ConcreteType, interceptors, constructorArgs);
         }
 
         public IBuildPolicy Clone()
@@ -48,44 +48,5 @@ namespace StructureMapAopNotify.StructureMap
         }
 
         public IBuildPolicy InnerPolicy { get; set; }
-    }
-
-    public class MyBuildPolicy : IBuildPolicy
-    {
-        public MyBuildPolicy(Type concreteType)
-        {
-            _ConcreteType = concreteType;
-        }
-
-        readonly Type _ConcreteType;
-
-        public object Build(BuildSession buildSession, Type pluginType, Instance instance)
-        {
-            var generator = new ProxyGenerator();
-
-            var constructor = _ConcreteType.GetConstructors()[0];
-            var parameters = constructor.GetParameters();
-
-            List<object> args = new List<object>();
-            foreach (var parameter in parameters)
-            {
-                args.Add(App.Container.GetInstance(parameter.ParameterType));
-            }
-
-            var interceptors = new List<IInterceptor>();
-            interceptors.Add(new NotifyInterceptor());
-
-
-            return generator.CreateClassProxy(_ConcreteType, interceptors.ToArray(), args.ToArray());
-        }
-
-        public IBuildPolicy Clone()
-        {
-            return new MyBuildPolicy(_ConcreteType);
-        }
-
-        public void EjectAll()
-        {
-        }
     }
 }

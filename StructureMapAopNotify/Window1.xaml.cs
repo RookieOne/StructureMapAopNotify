@@ -15,8 +15,6 @@ namespace StructureMapAopNotify
             {
                 InitializeComponent();
 
-                var whatIHave = App.Container.WhatDoIHave();
-
                 content.Content = App.Container.GetInstance<IMyViewModel>();
 
                 var vm = content.Content as MyViewModel;
@@ -27,8 +25,7 @@ namespace StructureMapAopNotify
                 };
             }
             catch (Exception ex)
-            {
-                
+            {               
                 throw ex;
             }
 

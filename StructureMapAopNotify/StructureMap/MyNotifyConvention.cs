@@ -22,10 +22,6 @@ namespace StructureMapAopNotify.StructureMap
                             r.ForRequestedType(interfaceType)
                             .InterceptConstructionWith(new MyBuildInterceptor(type))
                             .TheDefaultIsConcreteType(type));
-                        
-            //family.AddInterceptor();
-            //family.AddType(concreteType);
-            //family.SetScopeTo(InstanceScope.Singleton);
         }
     }
 }
